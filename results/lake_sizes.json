@@ -1,0 +1,7 @@
+{
+  "bronze_institution_csv_mb": 2459,
+  "same_27_columns_as_csv_mb": 24.2,
+  "silver_institution_parquet_mb": 11.1,
+  "bronze_program_csv_mb": 1145,
+  "silver_program_parquet_mb": 12.9
+}
