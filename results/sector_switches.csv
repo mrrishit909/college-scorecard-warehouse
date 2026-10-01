@@ -1,0 +1,8 @@
+from_sector,to_sector,switches,institutions,undoing_previous_switch
+Private for-profit,Private nonprofit,206,204,1
+Private nonprofit,Private for-profit,121,121,9
+Private nonprofit,Public,34,34,3
+Private for-profit,Public,26,26,0
+Public,Private for-profit,18,18,5
+Public,Private nonprofit,13,12,1
+All,All,418,369,19

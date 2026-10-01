@@ -43,10 +43,11 @@ def main():
     raw = f"read_csv('{BRONZE}/MERGED*_PP.csv', all_varchar = true, header = true, union_by_name = true)"
     t_raw, r_raw = timed(con, q.format(src=raw), runs=1)
     t_pq, r_pq = timed(con, q.format(src=f"read_parquet('{LAKE}/institution_year/*/*.parquet', hive_partitioning = true)"))
-    t_gold, r_gold = timed(con, "SELECT i.control, sum(f.undergrad_enrollment) FROM fact_institution_year f JOIN dim_institution i USING (unitid) GROUP BY 1 ORDER BY 1")
+    t_gold, r_gold = timed(con, "SELECT control, sum(undergrad_enrollment) FROM fact_institution_year GROUP BY 1 ORDER BY 1")
     bench = {"query": "total undergraduate enrollment by control, all 30 years",
              "raw_csv_seconds": round(t_raw, 2), "silver_parquet_seconds": round(t_pq, 3), "gold_table_seconds": round(t_gold, 3),
-             "raw_and_parquet_agree": [list(map(str, x)) for x in r_raw if x[0] in ("1", "2", "3")] == [[str(a), str(b)] for a, b in r_pq if a is not None]}
+             "raw_parquet_and_gold_agree": [list(map(str, x)) for x in r_raw if x[0] in ("1", "2", "3")] == [[str(a), str(b)] for a, b in r_pq if a is not None]
+                                           == [[str(a), str(b)] for a, b in r_gold if a is not None]}
     (HERE / "results" / "benchmark.json").write_text(json.dumps(bench, indent=2) + "\n")
     print(bench)
     print(con.execute("SELECT (SELECT count(*) FROM dim_institution), (SELECT count(*) FROM fact_institution_year), (SELECT count(*) FROM fact_program), (SELECT count(*) FROM dim_field)").fetchone())

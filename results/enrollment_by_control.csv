@@ -1,91 +1,91 @@
 year,control,institutions,undergrads
-1996,Private for-profit,2762,504156
-1996,Private nonprofit,2118,2133360
-1996,Public,2127,8707174
-1997,Private for-profit,2632,509662
-1997,Private nonprofit,2077,2154600
-1997,Public,2225,8541312
-1998,Private for-profit,2479,765054
-1998,Private nonprofit,2074,2187152
-1998,Public,2149,8533509
-1999,Private for-profit,2442,583236
-1999,Private nonprofit,2034,2220254
-1999,Public,2133,8818413
-2000,Private for-profit,2429,
-2000,Private nonprofit,2029,
-2000,Public,2196,
-2001,Private for-profit,2486,715888
-2001,Private nonprofit,2061,2218231
-2001,Public,2178,9009019
-2002,Private for-profit,2448,783800
-2002,Private nonprofit,2034,2353972
-2002,Public,2168,9540521
-2003,Private for-profit,2500,885206
-2003,Private nonprofit,2035,2446592
-2003,Public,2138,9817456
-2004,Private for-profit,2587,1029168
-2004,Private nonprofit,2033,2500503
-2004,Public,2127,9908957
-2005,Private for-profit,2699,1132582
-2005,Private nonprofit,2040,2527886
-2005,Public,2160,9968606
-2006,Private for-profit,2774,1152030
-2006,Private nonprofit,2034,2554771
-2006,Public,2143,10119325
-2007,Private for-profit,2810,1230484
-2007,Private nonprofit,2023,2596918
-2007,Public,2137,10299873
-2008,Private for-profit,2919,1430301
-2008,Private nonprofit,2017,2668606
-2008,Public,2119,11243527
-2009,Private for-profit,3078,1674350
-2009,Private nonprofit,2023,2758432
-2009,Public,2116,12089302
-2010,Private for-profit,3332,1905205
-2010,Private nonprofit,2034,2840223
-2010,Public,2104,12515889
-2011,Private for-profit,3580,1862129
-2011,Private nonprofit,2053,2879519
-2011,Public,2113,12508647
-2012,Private for-profit,3703,1664251
-2012,Private nonprofit,2059,2908603
-2012,Public,2100,12303263
-2013,Private for-profit,3705,1530660
-2013,Private nonprofit,2063,2907872
-2013,Public,2101,12146850
-2014,Private for-profit,3640,1429887
-2014,Private nonprofit,2049,2907095
-2014,Public,2077,12009910
-2015,Private for-profit,3507,1244609
-2015,Private nonprofit,2064,2886677
-2015,Public,2095,11820064
-2016,Private for-profit,3086,1062930
-2016,Private nonprofit,2058,2867802
-2016,Public,2094,11730063
-2017,Private for-profit,2970,987878
-2017,Private nonprofit,2045,2835694
-2017,Public,2097,11628046
-2018,Private for-profit,2687,901930
-2018,Private nonprofit,2010,2854823
-2018,Public,2110,11476551
-2019,Private for-profit,2577,909694
-2019,Private nonprofit,2022,2836776
-2019,Public,2095,11349555
-2020,Private for-profit,2580,948688
-2020,Private nonprofit,2012,2792443
-2020,Public,2089,10823041
-2021,Private for-profit,2481,939257
-2021,Private nonprofit,1982,2765552
-2021,Public,2080,10399751
-2022,Private for-profit,2433,933372
-2022,Private nonprofit,1980,2749696
-2022,Public,2071,10177470
-2023,Private for-profit,2410,983661
-2023,Private nonprofit,1961,2805333
-2023,Public,2059,10285089
-2024,Private for-profit,2348,1027290
-2024,Private nonprofit,1925,2863763
-2024,Public,2049,10593317
+1996,Private for-profit,2795,510852
+1996,Private nonprofit,2109,2136862
+1996,Public,2103,8696976
+1997,Private for-profit,2661,518051
+1997,Private nonprofit,2071,2156398
+1997,Public,2202,8531125
+1998,Private for-profit,2502,773270
+1998,Private nonprofit,2075,2189147
+1998,Public,2125,8523298
+1999,Private for-profit,2465,593511
+1999,Private nonprofit,2035,2220314
+1999,Public,2109,8808078
+2000,Private for-profit,2458,
+2000,Private nonprofit,2023,
+2000,Public,2173,
+2001,Private for-profit,2511,738256
+2001,Private nonprofit,2056,2206655
+2001,Public,2158,8998227
+2002,Private for-profit,2469,805400
+2002,Private nonprofit,2029,2346429
+2002,Public,2151,9526464
+2003,Private for-profit,2538,923559
+2003,Private nonprofit,2010,2428640
+2003,Public,2125,9797055
+2004,Private for-profit,2642,1088753
+2004,Private nonprofit,1992,2464701
+2004,Public,2113,9885174
+2005,Private for-profit,2769,1204586
+2005,Private nonprofit,1987,2488911
+2005,Public,2143,9935577
+2006,Private for-profit,2849,1241189
+2006,Private nonprofit,1975,2506358
+2006,Public,2126,10078579
+2007,Private for-profit,2901,1324318
+2007,Private nonprofit,1948,2555501
+2007,Public,2121,10247456
+2008,Private for-profit,3007,1588379
+2008,Private nonprofit,1931,2588663
+2008,Public,2093,11165392
+2009,Private for-profit,3176,1910919
+2009,Private nonprofit,1943,2646410
+2009,Public,2098,11964755
+2010,Private for-profit,3444,2186060
+2010,Private nonprofit,1941,2702365
+2010,Public,2085,12372892
+2011,Private for-profit,3663,2114819
+2011,Private nonprofit,1987,2761451
+2011,Public,2096,12374025
+2012,Private for-profit,3789,1924485
+2012,Private nonprofit,1991,2776350
+2012,Public,2082,12175282
+2013,Private for-profit,3778,1757949
+2013,Private nonprofit,2008,2794734
+2013,Public,2083,12032699
+2014,Private for-profit,3717,1648157
+2014,Private nonprofit,1993,2799420
+2014,Public,2056,11899315
+2015,Private for-profit,3544,1391715
+2015,Private nonprofit,2047,2834604
+2015,Public,2075,11725031
+2016,Private for-profit,3124,1204169
+2016,Private nonprofit,2041,2812061
+2016,Public,2073,11644565
+2017,Private for-profit,2995,1115951
+2017,Private nonprofit,2041,2783896
+2017,Public,2076,11551771
+2018,Private for-profit,2699,1000892
+2018,Private nonprofit,2006,2799362
+2018,Public,2102,11433050
+2019,Private for-profit,2600,1014485
+2019,Private nonprofit,2005,2772680
+2019,Public,2089,11308860
+2020,Private for-profit,2604,1068635
+2020,Private nonprofit,1996,2723414
+2020,Public,2081,10772123
+2021,Private for-profit,2504,1053676
+2021,Private nonprofit,1967,2694405
+2021,Public,2072,10356479
+2022,Private for-profit,2444,1029189
+2022,Private nonprofit,1972,2681200
+2022,Public,2068,10150149
+2023,Private for-profit,2420,1081086
+2023,Private nonprofit,1954,2732593
+2023,Public,2056,10260404
+2024,Private for-profit,2355,1124457
+2024,Private nonprofit,1919,2786748
+2024,Public,2048,10573165
 2025,Private for-profit,2325,
 2025,Private nonprofit,1901,
 2025,Public,2047,

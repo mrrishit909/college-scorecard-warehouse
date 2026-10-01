@@ -2,9 +2,9 @@ digraph G {
   graph [bgcolor="#0b0b0b", rankdir=LR, nodesep=0.35, ranksep=0.9];
   node [shape=plaintext, fontname="Helvetica", fontcolor="#f2f2f0", fontsize=12];
   edge [color="#8a8a87", arrowhead=none];
-  fact_institution_year [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#4a2414"><b>fact_institution_year</b></td></tr><tr><td align="left"><i>grain: institution x year</i></td></tr><tr><td align="left">enrollment, admission rate</td></tr><tr><td align="left">cost, net price, tuition</td></tr><tr><td align="left">Pell share, completion</td></tr><tr><td align="left">median debt, earnings 10 yr</td></tr><tr><td align="left">default rate</td></tr></table>>];
+  fact_institution_year [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#4a2414"><b>fact_institution_year</b></td></tr><tr><td align="left"><i>grain: institution x year</i></td></tr><tr><td align="left">sector, degree mix as reported that year</td></tr><tr><td align="left">enrollment, admission rate</td></tr><tr><td align="left">cost, net price, tuition</td></tr><tr><td align="left">Pell share, completion</td></tr><tr><td align="left">median debt, earnings 10 yr</td></tr><tr><td align="left">default rate</td></tr></table>>];
   fact_program [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#4a2414"><b>fact_program</b></td></tr><tr><td align="left"><i>grain: institution x field x credential x cohort</i></td></tr><tr><td align="left">completers</td></tr><tr><td align="left">median debt</td></tr><tr><td align="left">earnings 1 and 4 yrs after</td></tr></table>>];
-  dim_institution [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#1f3b5c"><b>dim_institution</b></td></tr><tr><td align="left">unitid</td></tr><tr><td align="left">name, city, state</td></tr><tr><td align="left">control, predominant degree</td></tr><tr><td align="left">region, locale, HBCU</td></tr></table>>];
+  dim_institution [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#1f3b5c"><b>dim_institution</b></td></tr><tr><td align="left">unitid</td></tr><tr><td align="left">name, city, state</td></tr><tr><td align="left">latest sector, degree mix</td></tr><tr><td align="left">region, locale, HBCU</td></tr></table>>];
   dim_year [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#1f3b5c"><b>dim_year</b></td></tr><tr><td align="left">year</td></tr><tr><td align="left">academic year</td></tr></table>>];
   dim_control [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#1f3b5c"><b>dim_control</b></td></tr><tr><td align="left">public / nonprofit / for-profit</td></tr></table>>];
   dim_field [label=<<table border="1" cellborder="0" cellspacing="0" cellpadding="3" color="#3a3a3a" bgcolor="#141414"><tr><td bgcolor="#1f3b5c"><b>dim_field</b></td></tr><tr><td align="left">4-digit CIP</td></tr><tr><td align="left">field name</td></tr><tr><td align="left">family</td></tr></table>>];
@@ -15,6 +15,7 @@ digraph G {
   dim_institution -> fact_institution_year;
   dim_institution -> fact_program;
   dim_control -> dim_institution;
+  dim_control -> fact_institution_year;
   dim_field -> fact_program;
   dim_cip_family -> dim_field;
   dim_credential -> fact_program;

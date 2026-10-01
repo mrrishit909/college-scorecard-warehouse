@@ -20,14 +20,15 @@ SELECT d.label AS control, count(*) AS institutions, count(f.median_earnings_10y
        median(f.avg_net_price) AS median_net_price, median(f.median_debt_completers) AS median_debt,
        median(f.median_earnings_10yr) AS median_earnings_10yr, round(median(f.completion_rate), 3) AS median_completion,
        round(median(f.median_debt_completers / f.median_earnings_10yr), 3) AS median_debt_to_earnings
-  FROM fact_institution_year f JOIN dim_institution i USING (unitid) JOIN dim_control d USING (control)
- WHERE f.year = 2020 AND i.predominant_degree = 3        -- predominantly bachelor's: compare like with like
+  FROM fact_institution_year f JOIN dim_control d ON d.control = f.control
+ WHERE f.year = 2020 AND f.predominant_degree = 3        -- predominantly bachelor's that year: compare like with like
  GROUP BY 1 ORDER BY median_earnings_10yr DESC;
 
 -- name: tuition_trend
+-- Sector and degree mix as reported in each year's file.
 SELECT f.year, d.label AS control, count(f.tuition_in_state) AS institutions, median(f.tuition_in_state) AS median_in_state_tuition
-  FROM fact_institution_year f JOIN dim_institution i USING (unitid) JOIN dim_control d USING (control)
- WHERE i.predominant_degree = 3 AND f.tuition_in_state IS NOT NULL GROUP BY 1, 2 ORDER BY 1, 2;
+  FROM fact_institution_year f JOIN dim_control d ON d.control = f.control
+ WHERE f.predominant_degree = 3 AND f.tuition_in_state IS NOT NULL GROUP BY 1, 2 ORDER BY 1, 2;
 
 -- name: bachelors_by_field
 -- Bachelor's programs in the 2018-20 completer cohort file, the one file with earnings and debt together.
@@ -39,11 +40,35 @@ SELECT fam.family, fam.family_title, count(*) AS programs, count(p.median_earnin
  GROUP BY 1, 2 HAVING count(p.median_earnings_4yr) >= 100 ORDER BY earnings_4yr DESC;
 
 -- name: closures
--- "No longer appears" includes closures but also mergers and branch campuses folded into a parent's reporting.
-SELECT d.label AS control, count(*) FILTER (WHERE i.first_year <= 2010) AS present_by_2010,
-       count(*) FILTER (WHERE i.first_year <= 2010 AND i.last_year < 2025) AS not_in_2025_file,
-       round(100.0 * count(*) FILTER (WHERE i.first_year <= 2010 AND i.last_year < 2025) / count(*) FILTER (WHERE i.first_year <= 2010), 1) AS pct_not_in_2025
-  FROM dim_institution i JOIN dim_control d USING (control) GROUP BY 1 ORDER BY 1;
+-- Institutions in any file up to 2010, by the sector they last reported up to 2010 (a for-profit that later converted
+-- to nonprofit still counts as a for-profit here). "Not in the 2025 file" includes closures but also mergers and
+-- branch campuses folded into a parent's reporting.
+WITH by2010 AS (SELECT unitid, arg_max(control, year) FILTER (WHERE control IS NOT NULL) AS control
+                  FROM fact_institution_year WHERE year <= 2010 GROUP BY 1)
+SELECT d.label AS control, count(*) AS present_by_2010, count(*) FILTER (WHERE i.last_year < 2025) AS not_in_2025_file,
+       round(100.0 * count(*) FILTER (WHERE i.last_year < 2025) / count(*), 1) AS pct_not_in_2025
+  FROM by2010 b JOIN dim_institution i USING (unitid) JOIN dim_control d ON d.control = b.control GROUP BY 1 ORDER BY 1;
+
+-- name: sector_attribution
+-- The same for-profit enrollment filed two ways: under the sector each institution reported that year (as-was, used
+-- by every mart above) and under its latest sector (as-is). An institution that switched moves its whole history.
+SELECT f.year, sum(f.undergrad_enrollment) FILTER (WHERE f.control = 3) AS for_profit_as_reported,
+       sum(f.undergrad_enrollment) FILTER (WHERE i.control = 3) AS for_profit_by_latest_sector,
+       count(*) FILTER (WHERE f.control <> i.control) AS institutions_in_another_sector_now
+  FROM fact_institution_year f JOIN dim_institution i USING (unitid)
+ GROUP BY 1 ORDER BY 1;
+
+-- name: sector_switches
+-- Changes in reported sector from one of an institution's files to its next; the "All" row counts every switch and
+-- every institution that switched. A switch that undoes the previous one is usually a coding fix, not a conversion.
+WITH s AS (SELECT unitid, control, lag(control) OVER (PARTITION BY unitid ORDER BY year) AS prev,
+                  lag(control, 2) OVER (PARTITION BY unitid ORDER BY year) AS prev2
+             FROM fact_institution_year WHERE control IS NOT NULL)
+SELECT coalesce(p.label, 'All') AS from_sector, coalesce(d.label, 'All') AS to_sector, count(*) AS switches,
+       count(DISTINCT s.unitid) AS institutions, count(*) FILTER (WHERE s.prev2 = s.control) AS undoing_previous_switch
+  FROM s JOIN dim_control p ON p.control = s.prev JOIN dim_control d ON d.control = s.control
+ WHERE s.control <> s.prev
+ GROUP BY GROUPING SETS ((p.label, d.label), ()) ORDER BY from_sector = 'All', switches DESC;
 
 -- name: suppression
 SELECT "column", sum("rows") AS "rows", sum(privacy_suppressed) AS privacy_suppressed, sum("null") AS missing

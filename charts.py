@@ -41,17 +41,18 @@ def schema():
     fact, dim = "#4a2414", "#1f3b5c"
     lines = ['digraph G {', '  graph [bgcolor="#0b0b0b", rankdir=LR, nodesep=0.35, ranksep=0.9];',
              '  node [shape=plaintext, fontname="Helvetica", fontcolor="#f2f2f0", fontsize=12];', '  edge [color="#8a8a87", arrowhead=none];',
-             t("fact_institution_year", fact, ["<i>grain: institution x year</i>", "enrollment, admission rate", "cost, net price, tuition",
+             t("fact_institution_year", fact, ["<i>grain: institution x year</i>", "sector, degree mix as reported that year",
+                                               "enrollment, admission rate", "cost, net price, tuition",
                                                "Pell share, completion", "median debt, earnings 10 yr", "default rate"]),
              t("fact_program", fact, ["<i>grain: institution x field x credential x cohort</i>", "completers", "median debt",
                                       "earnings 1 and 4 yrs after"]),
-             t("dim_institution", dim, ["unitid", "name, city, state", "control, predominant degree", "region, locale, HBCU"]),
+             t("dim_institution", dim, ["unitid", "name, city, state", "latest sector, degree mix", "region, locale, HBCU"]),
              t("dim_year", dim, ["year", "academic year"]), t("dim_control", dim, ["public / nonprofit / for-profit"]),
              t("dim_field", dim, ["4-digit CIP", "field name", "family"]), t("dim_cip_family", dim, ["2-digit CIP family title"]),
              t("dim_credential", dim, ["credential level"]),
              t("agg_enrollment_cube", "#2a2a2a", ["CUBE(year, control, region)", "institutions, undergrads"]),
              "  dim_year -> fact_institution_year;", "  dim_institution -> fact_institution_year;", "  dim_institution -> fact_program;",
-             "  dim_control -> dim_institution;", "  dim_field -> fact_program;", "  dim_cip_family -> dim_field;", "  dim_credential -> fact_program;",
+             "  dim_control -> dim_institution;", "  dim_control -> fact_institution_year;", "  dim_field -> fact_program;", "  dim_cip_family -> dim_field;", "  dim_credential -> fact_program;",
              "  fact_institution_year -> agg_enrollment_cube [style=dashed];", "}"]
     (HERE / "charts" / "schema.dot").write_text("\n".join(lines) + "\n")
     subprocess.run([DOT, "-Tpng", "-Gdpi=130", str(HERE / "charts" / "schema.dot"), "-o", str(HERE / "charts" / "01_schema.png")], check=True)
@@ -97,10 +98,12 @@ def main():
         ax.plot(g["year"], g["undergrads"] / 1e6, color=COLORS[ctl], linewidth=2, marker="o", markersize=3, label=ctl)
     fp = e[e["control"] == "Private for-profit"].set_index("year")["undergrads"]
     peak = fp.idxmax()
+    latest = pd.read_csv(R / "sector_attribution.csv").set_index("year")["for_profit_by_latest_sector"]
+    ax.plot(latest.index, latest / 1e6, color=ORANGE, linewidth=1.5, linestyle="--", label="For-profit, filed under today's sector")
     ax.annotate(f"for-profit peak {fp[peak] / 1e6:.2f}M ({peak})", (peak, fp[peak] / 1e6), xytext=(peak + 2, 0.3), color=INK, fontsize=9,
                 arrowprops=dict(arrowstyle="-", color=DIM))
     ax.set_ylabel("undergraduates (millions)")
-    ax.legend(frameon=False, labelcolor=INK, loc="center right")
+    ax.legend(frameon=False, labelcolor=INK, loc="center right", fontsize=10)
     ax.grid(axis="x", visible=False)
     ax.set_title("The for-profit boom and bust: undergraduate enrollment by sector (2000 and 2025 files lack enrollment)")
     save(fig, "04_enrollment.png")
