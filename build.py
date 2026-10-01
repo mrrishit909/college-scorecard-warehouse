@@ -1,6 +1,6 @@
 """Steps 3-4: build the gold star schema from the silver lake, run the marts, and time raw CSV vs Parquet.
 
-    ./venv/bin/python build.py     -> data/warehouse.duckdb, results/*.csv, results/benchmark.json
+    ./venv/bin/python build.py     -> data/warehouse.duckdb, results/*.csv, results/benchmark.json, results/warehouse_counts.json
 """
 import json
 import re
@@ -50,7 +50,12 @@ def main():
                                            == [[str(a), str(b)] for a, b in r_gold if a is not None]}
     (HERE / "results" / "benchmark.json").write_text(json.dumps(bench, indent=2) + "\n")
     print(bench)
-    print(con.execute("SELECT (SELECT count(*) FROM dim_institution), (SELECT count(*) FROM fact_institution_year), (SELECT count(*) FROM fact_program), (SELECT count(*) FROM dim_field)").fetchone())
+    counts = dict(zip(["institutions", "institution_years", "program_rows", "fields"], con.execute(
+        "SELECT (SELECT count(*) FROM dim_institution), (SELECT count(*) FROM fact_institution_year), (SELECT count(*) FROM fact_program), (SELECT count(*) FROM dim_field)").fetchone()))
+    widths = {len(con.execute(f"DESCRIBE SELECT * FROM read_csv('{f}', all_varchar = true, header = true)").fetchall()) for f in BRONZE.glob("MERGED*_PP.csv")}
+    counts.update(institution_files=len(list(BRONZE.glob("MERGED*_PP.csv"))), columns_per_institution_file=sorted(widths))
+    (HERE / "results" / "warehouse_counts.json").write_text(json.dumps(counts, indent=2) + "\n")
+    print(counts)
 
 
 if __name__ == "__main__":
