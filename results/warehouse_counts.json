@@ -6,5 +6,10 @@
   "institution_files": 30,
   "columns_per_institution_file": [
     3308
+  ],
+  "program_files": 8,
+  "program_cohorts": [
+    "1415_1516",
+    "2122_2223"
   ]
 }

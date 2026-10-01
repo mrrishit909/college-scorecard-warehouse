@@ -53,7 +53,9 @@ def main():
     counts = dict(zip(["institutions", "institution_years", "program_rows", "fields"], con.execute(
         "SELECT (SELECT count(*) FROM dim_institution), (SELECT count(*) FROM fact_institution_year), (SELECT count(*) FROM fact_program), (SELECT count(*) FROM dim_field)").fetchone()))
     widths = {len(con.execute(f"DESCRIBE SELECT * FROM read_csv('{f}', all_varchar = true, header = true)").fetchall()) for f in BRONZE.glob("MERGED*_PP.csv")}
-    counts.update(institution_files=len(list(BRONZE.glob("MERGED*_PP.csv"))), columns_per_institution_file=sorted(widths))
+    cohorts = sorted(f.stem for f in (LAKE / "program").glob("*.parquet"))
+    counts.update(institution_files=len(list(BRONZE.glob("MERGED*_PP.csv"))), columns_per_institution_file=sorted(widths),
+                  program_files=len(cohorts), program_cohorts=[cohorts[0], cohorts[-1]])
     (HERE / "results" / "warehouse_counts.json").write_text(json.dumps(counts, indent=2) + "\n")
     print(counts)
 

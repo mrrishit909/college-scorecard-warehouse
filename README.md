@@ -67,6 +67,7 @@ For example, median debt is privacy-suppressed in 41,515 institution-years.
   - `dim_field` holds 449 four-digit CIP fields;
   - `dim_cip_family`;
   - `dim_credential`.
+- Row and file counts: `results/warehouse_counts.json`.
 - `agg_enrollment_cube`: `GROUP BY CUBE (year, control, region)` with `grouping_id`, so a dashboard can read any
   subtotal without re-aggregating.
 
