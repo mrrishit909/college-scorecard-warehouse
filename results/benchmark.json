@@ -1,6 +1,6 @@
 {
   "query": "total undergraduate enrollment by control, all 30 years",
-  "raw_csv_seconds": 10.55,
+  "raw_csv_seconds": 10.7,
   "silver_parquet_seconds": 0.002,
   "gold_table_seconds": 0.002,
   "raw_and_parquet_agree": true

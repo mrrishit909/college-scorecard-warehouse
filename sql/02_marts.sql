@@ -47,4 +47,4 @@ SELECT d.label AS control, count(*) FILTER (WHERE i.first_year <= 2010) AS prese
 
 -- name: suppression
 SELECT "column", sum("rows") AS "rows", sum(privacy_suppressed) AS privacy_suppressed, sum("null") AS missing
-  FROM read_csv('{results}/suppression.csv') GROUP BY 1 ORDER BY 3 DESC, 4 DESC;
+  FROM read_csv('{results}/suppression_by_year.csv') GROUP BY 1 ORDER BY 3 DESC, 4 DESC, 1;

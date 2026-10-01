@@ -1,7 +1,7 @@
 """Steps 1-2: download, then bronze -> silver.
 
     ./venv/bin/python lake.py      -> data/lake/institution_year/year=YYYY/*.parquet, data/lake/program/*.parquet,
-                                      data/lake/cip_family.parquet, results/suppression.csv, results/lake_sizes.json
+                                      data/lake/cip_family.parquet, results/suppression_by_year.csv, results/lake_sizes.json
 
 Bronze is the raw College Scorecard download (US Department of Education, released 10 June 2026): 30 annual
 institution files of 3,308 columns each, plus field-of-study files. Silver keeps only the columns the warehouse needs,
@@ -81,7 +81,7 @@ def main():
     cip["code"] = cip["CIPCode"].str.replace(r'[="]', "", regex=True)
     cip[cip["code"].str.len() == 2][["code", "CIPTitle"]].rename(columns={"CIPTitle": "title"}).to_parquet(LAKE / "cip_family.parquet", index=False)
     (HERE / "results").mkdir(exist_ok=True)
-    pd.DataFrame(supp).to_csv(HERE / "results" / "suppression.csv", index=False)
+    pd.DataFrame(supp).to_csv(HERE / "results" / "suppression_by_year.csv", index=False)
     size = lambda p: sum(x.stat().st_size for x in p.rglob("*") if x.is_file())
     # fair comparison: the same 27 columns as CSV vs Parquet (column pruning and file format are separate wins)
     tmp = HERE / "data" / "same_columns.csv"
